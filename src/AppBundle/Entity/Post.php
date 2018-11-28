@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,19 +13,19 @@ class Post
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id()
+     * @ORM\GeneratedValue()
      * @var int
      */
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Comment", mappedBy="post", cascade={"all"})
-     * @var Collection|Comment[]
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Hub", mappedBy="posts")
      */
-    private $comments;
+    private $hubs;
 
     public function __construct()
     {
-        $this->comments = new ArrayCollection();
+        $this->hubs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -34,25 +33,23 @@ class Post
         return $this->id;
     }
 
-    /**
-     * @return Collection|Comment[]
-     */
-    public function getComments(): Collection
+    public function addHub(Hub $hub): Post
     {
-        return $this->comments;
-    }
-
-    public function addComment(Comment $comment): Post
-    {
-        $this->comments[] = $comment;
+        $hub->addPost($this);
+        $this->hubs[] = $hub;
 
         return $this;
     }
 
-    public function removeComment(Comment $comment): Post
+    public function removeHub(Hub $hub): Post
     {
-        $this->comments->removeElement($comment);
+        $this->hubs->removeElement($hub);
 
         return $this;
+    }
+
+    public function getHubs(): ArrayCollection
+    {
+        return $this->hubs;
     }
 }
