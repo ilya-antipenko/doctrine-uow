@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -48,7 +49,7 @@ class Post
         return $this;
     }
 
-    public function getHubs(): ArrayCollection
+    public function getHubs(): Collection
     {
         return $this->hubs;
     }

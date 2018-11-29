@@ -9,7 +9,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class AppTestCommand extends Command
+class AppTest2Command extends Command
 {
     /**
      * @var EntityManagerInterface
@@ -25,7 +25,7 @@ class AppTestCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('app:test');
+            ->setName('app:test2');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -43,14 +43,33 @@ class AppTestCommand extends Command
         $em->persist($post);
         $em->flush();
 
-// 2. Uncomment this and check.
-//        $post2 = new Post();
-//        $post2->addHub($hub);
-//        $em->persist($post2);
+        // Create second Post
+        $post2 = new Post();
+        $em->persist($post2);
 
-// 1. Uncomment this and check.
-//        $em->remove($post);
-//        $em->flush();
+        $hub->getPosts()->clear();
+        $hub->addPost($post2);
+        $em->flush();
+
+        // Print hub data
+        echo 'Before refresh: ' . PHP_EOL;
+        $this->printHub($hub);
+
+        // Refresh from the DB
+        $em->refresh($hub);
+
+        // Print hub data
+        echo 'After refresh: ' . PHP_EOL;
+        $this->printHub($hub);
+    }
+
+    private function printHub(Hub $hub)
+    {
+        echo sprintf('Posts of hub "%s"' . PHP_EOL, $hub->getName());
+        foreach ($hub->getPosts() as $post) {
+            echo '[+] Post ID: ' . $post->getId() . PHP_EOL;
+        }
+        echo '=====================' . PHP_EOL . PHP_EOL;
     }
 
 }
