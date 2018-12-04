@@ -1,9 +1,14 @@
+Doctrine ORM Internals. UnitOfWork
+==================================
+
 This repository shows an example of unsafe behaviour of Doctrine2 in case of using `flush` inside `postFlush` event.
-Doctrine documentation mentions that: https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/events.html#postflush 
+
+Slides
+------
+https://www.slideshare.net/IlyaAntipenko/doctrine-orm-internals-unitofwork-124771728
 
 Install
 -------
-
 Run following commands to install application
 ```
 composer install
